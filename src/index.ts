@@ -8,4 +8,4 @@ serve({
     port: PORT,
 })
 
-logger.info(`hono-template 启动成功，访问地址：http://localhost:${PORT}`)
+logger.info(`r2-image-uploader 启动成功，访问地址：http://localhost:${PORT}`)

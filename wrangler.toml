@@ -1,14 +1,22 @@
-name = "hono-template"
+name = "r2-image-uploader"
 # 默认为 Production 环境
 main = "dist/app.mjs"
 minify = true
 compatibility_date = "2024-10-20"
 compatibility_flags = ["nodejs_compat"]
 
+[[r2_buckets]]
+binding = "R2"
+bucket_name = "cmyr-oss"
+
 [env.dev]
 # Development 环境配置
 main = "src/app.ts"
 minify = false
+
+[[env.dev.r2_buckets]]
+binding = "R2"
+bucket_name = "cmyr-oss"
 
 [observability]
 enabled = true
