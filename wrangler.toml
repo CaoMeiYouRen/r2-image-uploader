@@ -1,0 +1,15 @@
+name = "hono-template"
+# 默认为 Production 环境
+main = "dist/app.mjs"
+minify = true
+compatibility_date = "2024-10-20"
+compatibility_flags = ["nodejs_compat"]
+
+[env.dev]
+# Development 环境配置
+main = "src/app.ts"
+minify = false
+
+[observability]
+enabled = true
+head_sampling_rate = 1 # optional. default = 1.
