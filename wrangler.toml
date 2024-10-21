@@ -8,6 +8,11 @@ compatibility_flags = ["nodejs_compat"]
 [[r2_buckets]]
 binding = "R2"
 bucket_name = "cmyr-oss"
+[[d1_databases]]
+binding = "D1"
+database_name = "image-meta"
+database_id = ""
+
 
 [env.dev]
 # Development 环境配置
@@ -17,6 +22,10 @@ minify = false
 [[env.dev.r2_buckets]]
 binding = "R2"
 bucket_name = "cmyr-oss"
+[[env.dev.d1_databases]]
+binding = "D1"
+database_name = "image-meta"
+database_id = ""
 
 [observability]
 enabled = true
