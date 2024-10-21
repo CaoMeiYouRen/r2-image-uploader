@@ -3,7 +3,6 @@ import { Context, Hono } from 'hono'
 import { env, getRuntimeKey } from 'hono/adapter'
 import dayjs from 'dayjs'
 import { Bindings } from '../types'
-import logger from '@/middlewares/logger'
 
 const app = new Hono<{ Bindings: Bindings }>()
 
@@ -40,9 +39,12 @@ async function uploadImageToR2(c: Context<{ Bindings: Bindings }>, body: ArrayBu
     const { R2_BASE_URL, R2_BUCKET_PREFIX } = envValue
 
     const fileExtension = getFileExtension(contentType)
+    if (fileExtension === 'unknown') {
+        throw new Error('Unknown file extension')
+    }
     const key = `${R2_BUCKET_PREFIX}${dayjs().format('YYYYMMDDHHmmssSSS')}-${Math.random().toString(36).slice(2, 9)}.${fileExtension}`
 
-    const r2Object = await r2.put(key, body, {
+    await r2.put(key, body, {
         httpMetadata: { contentType },
         customMetadata: {},
     })

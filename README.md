@@ -4,7 +4,7 @@
   <a href="https://github.com/CaoMeiYouRen/r2-image-uploader/actions?query=workflow%3ARelease" target="_blank">
     <img alt="GitHub Workflow Status" src="https://img.shields.io/github/actions/workflow/status/CaoMeiYouRen/r2-image-uploader/release.yml?branch=master">
   </a>
-  <img src="https://img.shields.io/badge/node-%3E%3D16-blue.svg" />
+  <img src="https://img.shields.io/badge/node-%3E%3D18-blue.svg" />
   <a href="https://github.com/CaoMeiYouRen/r2-image-uploader#readme" target="_blank">
     <img alt="Documentation" src="https://img.shields.io/badge/documentation-yes-brightgreen.svg" />
   </a>
