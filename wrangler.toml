@@ -13,6 +13,10 @@ binding = "D1"
 database_name = "image-meta"
 database_id = ""
 
+[vars]
+R2_BUCKET_PREFIX = 'images/'
+MAX_BODY_SIZE = 10485760
+MAX_UPLOAD_COUNT = 100
 
 [env.dev]
 # Development 环境配置

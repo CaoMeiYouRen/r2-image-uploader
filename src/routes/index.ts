@@ -59,7 +59,7 @@ async function uploadImageToR2(c: Context<{ Bindings: Bindings }>, body: ArrayBu
 // 检查IP上传次数
 async function checkIPUploadCount(c: Context<{ Bindings: Bindings }>, ip: string): Promise<boolean> {
     const envValue = env(c)
-    const MAX_UPLOAD_COUNT = parseInt(envValue.MAX_UPLOAD_COUNT)
+    const MAX_UPLOAD_COUNT = parseInt(envValue.MAX_UPLOAD_COUNT) || 100
     const d1 = c.env.D1
 
     const today = dayjs().format('YYYY-MM-DD')
@@ -87,7 +87,7 @@ app.post('/upload-from-url', async (c) => {
     }
 
     const envValue = env(c)
-    const MAX_BODY_SIZE = parseInt(envValue.MAX_BODY_SIZE)
+    const MAX_BODY_SIZE = parseInt(envValue.MAX_BODY_SIZE) || 100 * 1024 * 1024
     const { url } = await c.req.json() || {}
     if (!url) {
         return c.json({ error: 'URL is required' }, 400)
@@ -136,7 +136,7 @@ app.post('/upload-from-body', async (c) => {
         return c.json({ error: 'This function is only available in Cloudflare Workers' }, 500)
     }
     const envValue = env(c)
-    const MAX_BODY_SIZE = parseInt(envValue.MAX_BODY_SIZE)
+    const MAX_BODY_SIZE = parseInt(envValue.MAX_BODY_SIZE) || 100 * 1024 * 1024
 
     const contentType = c.req.header('content-type')
     const contentLength = c.req.header('content-length')
