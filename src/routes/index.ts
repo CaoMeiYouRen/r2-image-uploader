@@ -2,6 +2,7 @@ import crypto from 'crypto'
 import { Context, Hono } from 'hono'
 import { env, getRuntimeKey } from 'hono/adapter'
 import dayjs from 'dayjs'
+import { fileTypeFromBuffer } from 'file-type'
 import { Bindings } from '../types'
 
 const app = new Hono<{ Bindings: Bindings }>()
@@ -80,6 +81,12 @@ async function checkFileExists(c: Context<{ Bindings: Bindings }>, md5: string):
     return result ? result.url as string : null
 }
 
+async function detectFileType(buffer: ArrayBuffer): Promise<string> {
+    const fileType = await fileTypeFromBuffer(buffer)
+    console.log('fileType', fileType)
+    return fileType?.mime || 'unknown'
+}
+
 // 从URL转存图片到R2
 app.post('/upload-from-url', async (c) => {
     if (getRuntimeKey() !== 'workerd') {
@@ -103,8 +110,8 @@ app.post('/upload-from-url', async (c) => {
     }
     try {
         const response = await fetch(url)
-        const contentType = response.headers.get('content-type')
-        const contentLength = response.headers.get('content-length')
+        const contentType = response.headers.get('Content-Type')
+        const contentLength = response.headers.get('Content-Length')
 
         if (!contentType || !contentType.startsWith('image/')) {
             return c.json({ error: 'Invalid image format' }, 400)
@@ -132,18 +139,15 @@ app.post('/upload-from-url', async (c) => {
 
 // 从请求body中转存图片到R2
 app.post('/upload-from-body', async (c) => {
+
     if (getRuntimeKey() !== 'workerd') {
         return c.json({ error: 'This function is only available in Cloudflare Workers' }, 500)
     }
     const envValue = env(c)
     const MAX_BODY_SIZE = parseInt(envValue.MAX_BODY_SIZE) || 100 * 1024 * 1024
 
-    const contentType = c.req.header('content-type')
-    const contentLength = c.req.header('content-length')
+    const contentLength = c.req.header('Content-Length')
 
-    if (!contentType || !contentType.startsWith('image/')) {
-        return c.json({ error: 'Invalid image format' }, 400)
-    }
     if (contentLength && parseInt(contentLength) > MAX_BODY_SIZE) {
         return c.json({ error: 'Image size exceeds the limit' }, 400)
     }
@@ -156,6 +160,10 @@ app.post('/upload-from-body', async (c) => {
     const existingUrl = await checkFileExists(c, md5)
     if (existingUrl) {
         return c.json({ success: true, url: existingUrl })
+    }
+    const contentType = c.req.header('Content-Type') || await detectFileType(body) // 如果没有Content-Type头，尝试从body中检测
+    if (!contentType || !contentType.startsWith('image/')) {
+        return c.json({ error: 'Invalid image format' }, 400)
     }
     const imageUrl = await uploadImageToR2(c, body, contentType)
     await c.env.D1.prepare('INSERT INTO images (url, md5, original_url) VALUES (?, ?, NULL)').bind(imageUrl, md5).run()
