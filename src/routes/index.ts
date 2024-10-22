@@ -37,7 +37,7 @@ function calculateMD5(buffer: ArrayBuffer): string {
 async function uploadImageToR2(c: Context<{ Bindings: Bindings }>, body: ArrayBuffer, contentType: string): Promise<string> {
     const r2 = c.env.R2
     const envValue = env(c)
-    const { R2_BASE_URL, R2_BUCKET_PREFIX } = envValue
+    const { R2_BASE_URL, R2_BUCKET_PREFIX = '' } = envValue
 
     const fileExtension = getFileExtension(contentType)
     if (fileExtension === 'unknown') {
@@ -47,10 +47,14 @@ async function uploadImageToR2(c: Context<{ Bindings: Bindings }>, body: ArrayBu
 
     await r2.put(key, body, {
         httpMetadata: { contentType },
-        customMetadata: {},
+        customMetadata: {
+            uploader: 'r2-image-uploader',
+        },
     })
     // logger.debug('r2Object', r2Object)
-
+    if (!R2_BASE_URL) {
+        throw new Error('R2_BASE_URL is required')
+    }
     const url = new URL(R2_BASE_URL)
     url.pathname = key
     const imageUrl = url.toString()
