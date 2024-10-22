@@ -1,5 +1,12 @@
 # r2-image-uploader
 
+## [1.0.1](https://github.com/CaoMeiYouRen/r2-image-uploader/compare/v1.0.0...v1.0.1) (2024-10-22)
+
+
+### 🐛 Bug 修复
+
+* 修复 R2_BUCKET_PREFIX 可能为 undefined 的问题；增加 customMetadata ([672dabd](https://github.com/CaoMeiYouRen/r2-image-uploader/commit/672dabd))
+
 # 1.0.0 (2024-10-22)
 
 
