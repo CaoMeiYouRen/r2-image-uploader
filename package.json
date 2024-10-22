@@ -1,6 +1,6 @@
 {
   "name": "r2-image-uploader",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "一个将图片从 URL 或请求中转存到 Cloudflare R2 Storage 的 Cloudflare Workers。",
   "author": "CaoMeiYouRen",
   "private": true,
