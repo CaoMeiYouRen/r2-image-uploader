@@ -1,5 +1,12 @@
 # r2-image-uploader
 
+## [1.0.2](https://github.com/CaoMeiYouRen/r2-image-uploader/compare/v1.0.1...v1.0.2) (2024-10-27)
+
+
+### 🐛 Bug 修复
+
+* 修复 部分图片存在 referer 防盗链的问题 ([81e6742](https://github.com/CaoMeiYouRen/r2-image-uploader/commit/81e6742))
+
 ## [1.0.1](https://github.com/CaoMeiYouRen/r2-image-uploader/compare/v1.0.0...v1.0.1) (2024-10-22)
 
 
