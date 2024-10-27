@@ -90,6 +90,36 @@ async function detectFileType(buffer: ArrayBuffer): Promise<string> {
     console.log('fileType', fileType)
     return fileType?.mime || 'unknown'
 }
+const referers = [
+    {
+        host: '.weibocdn.com',
+        referer: 'https://weibo.com/',
+    },
+    {
+        host: '.sinaimg.cn',
+        referer: 'https://weibo.com/',
+    },
+    {
+        host: '.sspai.com',
+        referer: 'https://sspai.com/',
+    },
+    {
+        host: '.pximg.net',
+        referer: 'https://pixiv.net/',
+    },
+]
+// 处理 Referer
+function getHeaders(url: string) {
+    for (const referer of referers) {
+        const urlObj = new URL(url)
+        if (urlObj.host.endsWith(referer.host)) {
+            return {
+                referer: referer.referer,
+            }
+        }
+    }
+    return {}
+}
 
 // 从URL转存图片到R2
 app.post('/upload-from-url', async (c) => {
@@ -113,7 +143,8 @@ app.post('/upload-from-url', async (c) => {
         return c.json({ success: true, url })
     }
     try {
-        const response = await fetch(url)
+        const headers = getHeaders(url)
+        const response = await fetch(url, { headers })
         const contentType = response.headers.get('Content-Type')
         const contentLength = response.headers.get('Content-Length')
 
