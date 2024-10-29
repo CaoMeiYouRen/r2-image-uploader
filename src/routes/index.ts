@@ -87,7 +87,6 @@ async function checkFileExists(c: Context<{ Bindings: Bindings }>, md5: string):
 
 async function detectFileType(buffer: ArrayBuffer): Promise<string> {
     const fileType = await fileTypeFromBuffer(buffer)
-    console.log('fileType', fileType)
     return fileType?.mime || 'unknown'
 }
 const referers = [
@@ -133,7 +132,6 @@ app.post('/upload-from-url', async (c) => {
     if (!url) {
         return c.json({ error: 'URL is required' }, 400)
     }
-    // console.log(c.req.header())
     const ip = c.req.header('CF-Connecting-IP') || 'unknown'
     if (!await checkIPUploadCount(c, ip)) {
         return c.json({ error: 'Upload limit exceeded for this IP' }, 429)
