@@ -29,17 +29,15 @@
 
 - node >=16
 
-## 🚀 安装
+## 🚀部署
 
-```sh
-npm install
-```
+### Cloudflare Workers 部署
 
-## 👨‍💻 使用
+#### 一键部署
 
-```sh
-npm run start
-```
+点击下方的按钮一键前往 Cloudflare Workers 部署
+
+[![Deploy to Cloudflare Workers](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/CaoMeiYouRen/r2-image-uploader)
 
 ## 🛠️ 开发
 
